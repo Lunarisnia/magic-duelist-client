@@ -5,6 +5,7 @@ import (
 
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/renderer"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/world"
+	"github.com/Lunarisnia/magic-duelist-client/internal/mtypes"
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -19,7 +20,6 @@ type GameEngine interface {
 	Start(ctx context.Context) error
 }
 
-// TODO: Need a renderer service, and players
 func NewGameEngine(screen tcell.Screen, renderer renderer.Renderer, world world.World) GameEngine {
 	return &GameEngineImpl{
 		tick:     0,
@@ -27,6 +27,13 @@ func NewGameEngine(screen tcell.Screen, renderer renderer.Renderer, world world.
 		screen:   screen,
 		world:    world,
 	}
+}
+
+var directions = map[rune]mtypes.Vector2i{
+	'a': mtypes.Vector2Left(),
+	'd': mtypes.Vector2Right(),
+	'w': mtypes.Vector2Up(),
+	's': mtypes.Vector2Down(),
 }
 
 func (g *GameEngineImpl) Start(ctx context.Context) error {
@@ -46,6 +53,9 @@ func (g *GameEngineImpl) Start(ctx context.Context) error {
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyCtrlC {
 				return nil
+			}
+			if direction, exist := directions[ev.Rune()]; exist {
+				g.world.MovePlayer(ctx, direction)
 			}
 		}
 

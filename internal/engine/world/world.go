@@ -30,7 +30,7 @@ type WorldImpl struct {
 func NewWorld(playerPawn, enemyPawn entities.Pawn) World {
 	arena := make(Arena, 15)
 	for i := range arena {
-		arena[i] = make([]int, 15)
+		arena[i] = make([]int, 60)
 	}
 	return &WorldImpl{
 		arena:        arena,

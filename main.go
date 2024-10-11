@@ -34,7 +34,7 @@ func main() {
 	// TODO: starting position should be coming from the server
 	playerPawn := entities.NewPawn(mtypes.Vector2i{X: 0, Y: 0})
 	// TODO: this should immediately be updated from the server for the correct position
-	opponentPawn := entities.NewPawn(mtypes.Vector2i{X: 2, Y: 2})
+	opponentPawn := entities.NewPawn(mtypes.Vector2i{X: 59, Y: 0})
 	// TODO: The world state should be obtained from the server
 	world := world.NewWorld(playerPawn, opponentPawn)
 
