@@ -12,6 +12,7 @@ import (
 )
 
 // NOTE: Player should always be on the left from their point of view like Tekken, which mean I need to translate those movement properly before sending it to the client
+// TODO: NEXT: Do projectile
 
 func main() {
 	s, err := tcell.NewScreen()

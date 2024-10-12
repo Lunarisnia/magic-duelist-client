@@ -32,14 +32,11 @@ func (r *RendererImpl) Render(ctx context.Context, snapshot world.Snapshot) erro
 	for y, cols := range snapshot.Arena {
 		for x := range cols {
 			r.screen.SetContent(x, y, ' ', nil, r.style)
-			if playerPosition.X == x && playerPosition.Y == y {
-				r.drawPawn(x, y, false)
-			}
-			if opponentPosition.X == x && opponentPosition.Y == y {
-				r.drawPawn(x, y, true)
-			}
 		}
 	}
+	r.drawPawn(playerPosition.X, playerPosition.Y, false)
+	r.drawPawn(opponentPosition.X, opponentPosition.Y, true)
+	r.drawBullets(snapshot.BulletList.Next)
 	return nil
 }
 
@@ -49,4 +46,15 @@ func (r *RendererImpl) drawPawn(x int, y int, isOpponent bool) {
 		sprite = '<'
 	}
 	r.screen.SetContent(x, y, sprite, nil, r.style)
+}
+
+func (r *RendererImpl) drawBullets(bulletList *world.BulletList) {
+	if bulletList == nil || bulletList.Bullet == nil {
+		return
+	}
+
+	sprite := 'O'
+	bulletPosition := bulletList.Bullet.GetPosition()
+	r.screen.SetContent(bulletPosition.X, bulletPosition.Y, sprite, nil, r.style)
+	r.drawBullets(bulletList.Next)
 }

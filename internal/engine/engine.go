@@ -2,6 +2,8 @@ package engine
 
 import (
 	"context"
+	"os"
+	"time"
 
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/renderer"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/world"
@@ -45,21 +47,35 @@ func (g *GameEngineImpl) Start(ctx context.Context) error {
 		g.screen.Show()
 
 		// Ask for user input
-		ev := g.screen.PollEvent()
+		input := func() {
+			for {
+				ev := g.screen.PollEvent()
 
-		switch ev := ev.(type) {
-		case *tcell.EventResize:
-			g.screen.Sync()
-		case *tcell.EventKey:
-			if ev.Key() == tcell.KeyCtrlC {
-				return nil
-			}
-			if direction, exist := directions[ev.Rune()]; exist {
-				g.world.MovePlayer(ctx, direction)
+				switch ev := ev.(type) {
+				case *tcell.EventResize:
+					g.screen.Sync()
+				case *tcell.EventKey:
+					if ev.Key() == tcell.KeyCtrlC {
+						os.Exit(0)
+					}
+					if direction, exist := directions[ev.Rune()]; exist {
+						g.world.MovePlayer(ctx, direction)
+					}
+					// NOTE: Might not be fixable since tcell don't report keyup
+					// FIXME: Player can't shoot and move
+					if ev.Rune() == ' ' {
+						g.world.PlayerShooting(ctx)
+					}
+				}
 			}
 		}
+		go input()
+
+		g.world.MoveBullets(ctx)
+		g.world.DestroyBullets(ctx)
 
 		// Calculate result from input || send user input to server
 		g.tick++
+		time.Sleep(20 * time.Millisecond)
 	}
 }
