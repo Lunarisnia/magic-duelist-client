@@ -72,8 +72,9 @@ func (g *GameEngineImpl) Start(ctx context.Context) error {
 		go input()
 
 		// TODO: moving bullets should be done by the server
-		g.world.MoveBullets(ctx)
-		g.world.DestroyBullets(ctx)
+		// g.world.MoveBullets(ctx)
+		// g.world.DestroyBullets(ctx)
+		// TODO: send snapshot to server
 
 		// Calculate result from input || send user input to server
 		g.tick++

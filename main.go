@@ -6,6 +6,9 @@ import (
 	"net"
 )
 
+// TODO: Do the start match API on the server, where you can assign each player to an ID
+// TODO: Have their movement translated properly and is visibly moving well enough on both player
+
 func main() {
 	packet := make([]byte, 64)
 	conn, err := net.Dial("udp", "127.0.0.1:6969")

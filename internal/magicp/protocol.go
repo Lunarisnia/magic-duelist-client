@@ -11,3 +11,45 @@ package magicp
 // 3. If the game is over (eg: player got hit)
 
 // Client Request Protocol:
+// {
+//   "position": {
+//     "x": 100,
+//     "y": 0,
+//   },
+//   "intent": "IDLE"
+// }
+
+// Server Snapshot Protocol:
+// {
+//   "p1_position": {
+//     "x": 100,
+//     "y": 200
+//   },
+//   "p2_position": {
+//     "x": 300,
+//     "y": 0
+//   },
+//   "bullets": {
+//     "owner": "p1",
+//     "position": {
+//       "x": 0,
+//       "y": 100
+//     },
+//     "direction": {
+//       "x": 1,
+//       "y": 0
+//     },
+//     "prev": null,
+//     "next": {
+//       "owner": "p2",
+//       "position": {
+//         "x": 0,
+//         "y": 1
+//       },
+//       "direction": {
+//         "x": -1,
+//         "y": 0
+//       }
+//     }
+//   }
+// }

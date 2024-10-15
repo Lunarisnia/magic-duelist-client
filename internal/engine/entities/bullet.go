@@ -5,6 +5,7 @@ import "github.com/Lunarisnia/magic-duelist-client/internal/mtypes"
 type Bullet interface {
 	Move()
 	GetPosition() mtypes.Vector2i
+	GetDirection() mtypes.Vector2i
 }
 
 type BulletImpl struct {
@@ -28,4 +29,8 @@ func (b *BulletImpl) Move() {
 
 func (b *BulletImpl) GetPosition() mtypes.Vector2i {
 	return b.position
+}
+
+func (b *BulletImpl) GetDirection() mtypes.Vector2i {
+	return b.direction
 }

@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"net"
 
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/entities"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/renderer"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/world"
+	"github.com/Lunarisnia/magic-duelist-client/internal/magicp"
 	"github.com/Lunarisnia/magic-duelist-client/internal/mtypes"
 	"github.com/gdamore/tcell/v2"
 )
@@ -39,6 +41,22 @@ func main() {
 	opponentPawn := entities.NewPawn(mtypes.Vector2i{X: 59, Y: 0})
 	// TODO: The world state should be obtained from the server
 	world := world.NewWorld(playerPawn, opponentPawn)
+
+	udpAddr := net.UDPAddr{
+		IP:   net.ParseIP("127.0.0.1"),
+		Port: 6900,
+	}
+	go magicp.Listen(udpAddr, func(snapshot *magicp.SnapshotProtocol) {
+		// TODO: Translate player position to the player pointer directly
+		newPlayerPosition := mtypes.Vector2i{
+			X: snapshot.P1Position.X,
+			Y: snapshot.P1Position.Y,
+		}
+		playerPawn.SetPosition(newPlayerPosition)
+
+		// TODO: Translate opponent position to the opponent pointer directly (But translate the position first, remember opponent is always on the right)
+		// TODO: Translate the bullet position from the server, hence I think each bullet should have its own ID and keyed to a map
+	})
 
 	gameEngine := engine.NewGameEngine(s, gameRenderer, world)
 	err = gameEngine.Start(ctx)

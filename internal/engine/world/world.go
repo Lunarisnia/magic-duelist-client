@@ -15,6 +15,7 @@ const (
 type Arena [][]int
 
 type Snapshot struct {
+	Author       int
 	Arena        Arena
 	PlayerPawn   entities.Pawn
 	OpponentPawn entities.Pawn
@@ -38,6 +39,7 @@ type World interface {
 }
 
 type WorldImpl struct {
+	author       int
 	arena        Arena
 	playerPawn   entities.Pawn
 	opponentPawn entities.Pawn
@@ -62,7 +64,9 @@ func NewWorld(playerPawn, enemyPawn entities.Pawn) World {
 	}
 	head.Next = &tail
 	tail.Prev = &head
+	// TODO: need server endpoint to get authorID
 	return &WorldImpl{
+		author:       1,
 		arena:        arena,
 		playerPawn:   playerPawn,
 		opponentPawn: enemyPawn,

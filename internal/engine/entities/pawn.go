@@ -10,6 +10,7 @@ type Pawn interface {
 	Move(ctx context.Context, direction mtypes.Vector2i)
 	GetPosition() mtypes.Vector2i
 	Shoot(ctx context.Context, isOpponent bool) Bullet
+	SetPosition(position mtypes.Vector2i)
 }
 
 type PawnImpl struct {
@@ -42,4 +43,8 @@ func (p *PawnImpl) Shoot(ctx context.Context, isOpponent bool) Bullet {
 	}
 	bullet := NewBullet(p, bulletOrigin, bulletDirection)
 	return bullet
+}
+
+func (p *PawnImpl) SetPosition(position mtypes.Vector2i) {
+	p.position = position
 }
