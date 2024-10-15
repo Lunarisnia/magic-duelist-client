@@ -3,9 +3,16 @@ package main
 import (
 	"fmt"
 	"net"
+
+	"github.com/Lunarisnia/magic-duelist-client/internal/server"
 )
 
 func main() {
+	serverState := server.ServerState{
+		HasGameStarted: false,
+		PlayersID:      make([]string, 0),
+	}
+	go server.ListenHTTP(&serverState)
 	udpAddr := net.UDPAddr{
 		Port: 6969,
 		IP:   net.ParseIP("127.0.0.1"),

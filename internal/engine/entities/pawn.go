@@ -14,10 +14,11 @@ type Pawn interface {
 }
 
 type PawnImpl struct {
+	id       string
 	position mtypes.Vector2i
 }
 
-func NewPawn(origin mtypes.Vector2i) Pawn {
+func NewPawn(id string, origin mtypes.Vector2i) Pawn {
 	return &PawnImpl{
 		position: origin,
 	}

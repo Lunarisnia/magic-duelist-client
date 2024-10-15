@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 
+	"github.com/Lunarisnia/magic-duelist-client/internal/client"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/entities"
 	"github.com/Lunarisnia/magic-duelist-client/internal/engine/renderer"
@@ -36,9 +37,13 @@ func main() {
 	gameRenderer := renderer.NewRenderer(s)
 
 	// TODO: starting position should be coming from the server
-	playerPawn := entities.NewPawn(mtypes.Vector2i{X: 0, Y: 0})
+	playerID, err := client.RegisterPlayer(ctx)
+	if err != nil {
+		panic(err)
+	}
+	playerPawn := entities.NewPawn(playerID, mtypes.Vector2i{X: 0, Y: 0})
 	// TODO: this should immediately be updated from the server for the correct position
-	opponentPawn := entities.NewPawn(mtypes.Vector2i{X: 59, Y: 0})
+	opponentPawn := entities.NewPawn("", mtypes.Vector2i{X: 59, Y: 0})
 	// TODO: The world state should be obtained from the server
 	world := world.NewWorld(playerPawn, opponentPawn)
 
