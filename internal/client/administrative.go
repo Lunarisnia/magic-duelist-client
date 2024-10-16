@@ -7,7 +7,12 @@ import (
 )
 
 func RegisterPlayer(ctx context.Context) (string, error) {
-	resp, err := http.Get("http://127.0.0.1:7000/register")
+	newRequest, err := http.NewRequest("GET", "http://localhost:7000/register", nil)
+	if err != nil {
+		return "", nil
+	}
+	client := http.Client{}
+	resp, err := client.Do(newRequest)
 	if err != nil {
 		return "", err
 	}

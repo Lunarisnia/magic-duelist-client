@@ -1,28 +1,21 @@
 package main
 
 import (
-	"bufio"
+	"context"
 	"fmt"
-	"net"
+
+	"github.com/Lunarisnia/magic-duelist-client/internal/client"
 )
 
 // TODO: Do the start match API on the server, where you can assign each player to an ID
 // TODO: Have their movement translated properly and is visibly moving well enough on both player
 
 func main() {
-	packet := make([]byte, 64)
-	conn, err := net.Dial("udp", "127.0.0.1:6969")
+	playerID, err := client.RegisterPlayer(context.Background())
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close()
-	_, err = conn.Write([]byte("Hello, There!"))
-	if err != nil {
-		panic(err)
-	}
-	_, err = bufio.NewReader(conn).Read(packet)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Response: ", string(packet))
+	fmt.Println("PlayerID: ", playerID)
 }
+
+// NOTE: You left this project after encountering the problem of system design spefically how to check if both player has connected to the game. I think you need to take a step back and do something else before going back to this one.
